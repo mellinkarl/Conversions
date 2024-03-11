@@ -20,12 +20,13 @@ def conv_num(num_str):
 
 
 def my_datetime(num_sec):
-    '''Takes a number of seconds since the epoch (1970) and returns the date in the format MM-DD-YYYY.'''
+    '''Takes a number of seconds since the epoch (1970)
+      and returns the date in the format MM-DD-YYYY.'''
     seconds_in_day = 86400
     seconds_in_year = 31536000
     seconds_in_leap_year = 31622400
 
-    # Current year to update 
+    # Current year to update
     current_year = 1970
 
     def is_leap_year(year):
@@ -34,16 +35,23 @@ def my_datetime(num_sec):
             return True
         else:
             return False
-        
+
     # Calculate year
     while num_sec >= seconds_in_year:
-        num_secs_in_year = seconds_in_leap_year if is_leap_year(current_year) else seconds_in_year
+        if is_leap_year(current_year):
+            num_secs_in_year = seconds_in_leap_year
+        else:
+            num_secs_in_year = seconds_in_year
         if num_sec >= num_secs_in_year:
             num_sec -= num_secs_in_year
             current_year += 1
 
+    if is_leap_year(current_year):
+        february = 29
+    else:
+        february = 28
     # Determing the number of days in each month (leap year or not)
-    days_in_months = [31, 29 if is_leap_year(current_year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    days_in_months = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     # Calculate month
     current_month = 1
@@ -55,16 +63,11 @@ def my_datetime(num_sec):
         # Less than the seconds in current month remaining
         else:
             break
-    
+
     # Calculate day (add one for the current day)
     current_day = num_sec // seconds_in_day + 1
 
     return f'{current_month:02d}-{current_day:02d}-{current_year}'
-
-print(my_datetime(0))
-print(my_datetime(123456789))
-print(my_datetime(9876543210))
-print(my_datetime(201653971200))
 
 
 def conv_endian(num, endian='big'):
@@ -105,4 +108,3 @@ def conv_endian(num, endian='big'):
     if neg_flag:
         result = '-'+result
     return result
-
