@@ -1,16 +1,22 @@
 def conv_num(num_str):
-    '''Hexadecimal Portion'''
-    if num_str.lower().startswith('0x'):
+    """Converts a number string into a base 10 number"""
+    # check if input is a string
+    if not isinstance(num_str, str):
+        return None
+    num_str = num_str.lower()
+    # check for negative sign
+    if num_str.startswith('-'):
+        sign = -1
+        num_str = num_str[1:]
+    else:
+        sign = 1
+    # handle hexadecimal numbers
+    if num_str.startswith('0x'):
         hex_part = num_str[2:]
-        if all(char in '0123456789abcdefABCDEF' for char in hex_part):
-            return int(num_str, 16)
+        if len(hex_part) > 0 and all(char in '0123456789abcdef' for char in hex_part):
+            return sign * int(num_str, 16)
         else:
             return None
-
-
-print(conv_num('0xAD4'))
-print(conv_num('0Xad4'))
-print(conv_num('0xAZ4'))
 
 
 def my_datetime(num_sec):
@@ -59,3 +65,7 @@ print(my_datetime(0))
 print(my_datetime(123456789))
 print(my_datetime(9876543210))
 print(my_datetime(201653971200))
+
+
+def conv_endian(num, endian='big'):
+    pass
