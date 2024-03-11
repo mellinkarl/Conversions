@@ -69,19 +69,19 @@ print(my_datetime(201653971200))
 
 def conv_endian(num, endian='big'):
     neg_flag = num < 0
-    Postive_num = abs(num)
-    def int_to_hex(num):
+    pos_num = abs(num)
+    def int_to_hex(digit):
         hex_chars = "0123456789ABCDEF"
-        hex_str = ""
-        if num == 0:
+        hexer = ""
+        if digit == 0:
             return "0"
-        while num > 0:
-            remainder = num % 16
-            hex_str = hex_chars[remainder] + hex_str
-            num = num // 16
-        return hex_str
+        while digit > 0:
+            remainder = digit % 16
+            hexer = hex_chars[remainder] + hexer
+            digit = digit // 16
+        return hexer
 
-    hex_str = int_to_hex(Postive_num)
+    hex_str = int_to_hex(pos_num)
 
     hex_length = len(hex_str)
     if hex_length % 2 != 0:
