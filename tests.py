@@ -149,17 +149,84 @@ class ConvNumTest(unittest.TestCase):
         self.assertEqual(conv_num(num_str), None)
 
     def test30(self):
-        """Tests if a space inside a number returns None"""
+        """Tests if a space inside a number string returns None"""
         num_str = "41 23"
         self.assertEqual(conv_num(num_str), None)
 
 
 class MyDatetimeTest(unittest.TestCase):
-    pass
+    def test1(self):
+        """Tests original date"""
+        num_sec = 0
+        self.assertEqual(my_datetime(num_sec), "01-01-1970")
+
+    def test2(self):
+        """Tests 1 second"""
+        num_sec = 1
+        self.assertEqual(my_datetime(num_sec), "01-01-1970")
+
+    def test3(self):
+        """Tests 1 day"""
+        num_sec = 86400
+        self.assertEqual(my_datetime(num_sec), "01-02-1970")
+
+    def test4(self):
+        """Tests 1 year"""
+        num_sec = 31536000
+        self.assertEqual(my_datetime(num_sec), "01-01-1971")
+
+    def test5(self):
+        """Tests 5 years (includes one leap year)"""
+        num_sec = 157766400
+        self.assertEqual(my_datetime(num_sec), "01-01-1975")
+
+    def test6(self):
+        """Tests 123456789 seconds"""
+        num_sec = 123456789
+        self.assertEqual(my_datetime(num_sec), "11-29-1973")
+
+    def test7(self):
+        """Tests hundreds of years"""
+        num_sec = 201653971200
+        self.assertEqual(my_datetime(num_sec), "02-29-8360")
 
 
 class ConvEndianTest(unittest.TestCase):
-    pass
+    def test0(self):
+        """Test with zero"""
+        self.assertEqual(conv_endian(0, 'big'), '00')
+        self.assertEqual(conv_endian(0, 'little'), '00')
+
+    def test1(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
+        self.assertEqual(conv_endian(954786), '0E 91 A2')
+
+    def test2(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(-954786), '-0E 91 A2')
+
+    def test3(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(954786, 'little'), 'A2 91 0E')
+
+    def test4(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(-954786, 'little'), '-A2 91 0E')
+        self.assertEqual(conv_endian(num=-954786, endian='little'), '-A2 91 0E')
+
+    def test5(self):
+        """test from assignment desc"""
+        self.assertIsNone(conv_endian(num=-954786, endian='small'))
+
+    def test6(self):
+        """Large Positive Number"""
+        self.assertEqual(conv_endian(4294967295, 'big'), 'FF FF FF FF')
+        self.assertEqual(conv_endian(4294967295, 'little'), 'FF FF FF FF')
+
+    def test7(self):
+        """little endian reversal test"""
+        self.assertEqual(conv_endian(66047, 'little'), 'FF 01 01')
 
 
 if __name__ == '__main__':
