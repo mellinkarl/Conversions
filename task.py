@@ -4,19 +4,77 @@ def conv_num(num_str):
     if not isinstance(num_str, str):
         return None
     num_str = num_str.lower()
-    # check for negative sign
-    if num_str.startswith('-'):
-        sign = -1
-        num_str = num_str[1:]
-    else:
-        sign = 1
+
     # handle hexadecimal numbers
-    if num_str.startswith('0x'):
-        hex_part = num_str[2:]
-        if len(hex_part) > 0 and all(char in '0123456789abcdef' for char in hex_part):
-            return sign * int(num_str, 16)
-        else:
-            return None
+    if num_str.startswith('0x') or num_str.startswith('-0x'):
+        return hex_str_to_int(num_str)
+
+    # handle floating-point numbers
+    if '.' in num_str:
+        return str_to_float(num_str)
+
+    # handle integer numbers
+    return str_to_int(num_str)
+
+
+def str_to_int(num_str):
+    """Helper function to convert an integer string to an int"""
+    sign = -1 if num_str.startswith('-') else 1
+    num_str = num_str[1:] if num_str.startswith('-') else num_str
+
+    # check if the string is not all digits
+    if not num_str.isdigit():
+        return None
+    result = 0
+    digits = "0123456789"
+    # calculate each digit
+    for digit in num_str:
+        result = result * 10 + digits.index(digit)
+    return sign * result
+
+
+def str_to_float(num_str):
+    """Helper function to convert a floating-point number string to a float"""
+    sign = -1 if num_str.startswith('-') else 1
+    num_str = num_str[1:] if num_str.startswith('-') else num_str
+    if num_str.count('.') > 1:
+        return None
+
+    # split string into integer and decimal strings
+    integer_part, decimal_part = num_str.split('.')
+    if len(integer_part) == 0 and len(decimal_part) == 0:
+        return None
+    # handle numbers with decimal point at the start or end
+    if len(integer_part) == 0:
+        integer_part = "0"
+    if len(decimal_part) == 0:
+        decimal_part = "0"
+    # check if all characters are digits
+    if not integer_part.isdigit() or not decimal_part.isdigit():
+        return None
+    result = str_to_int(integer_part)
+    factor = 0.1
+    # calculate decimal places
+    for digit in decimal_part:
+        result += str_to_int(digit) * factor
+        factor /= 10
+    return sign * round(result, len(decimal_part))
+
+
+def hex_str_to_int(num_str):
+    sign = -1 if num_str.startswith('-') else 1
+    num_str = num_str[1:] if num_str.startswith('-') else num_str
+
+    hex_part = num_str[2:]
+    hex_digits = '0123456789abcdef'
+    # check if the hex number is empty or containing non-hex characters
+    if len(hex_part) < 1 or not all(char in hex_digits for char in hex_part):
+        return None
+    result = 0
+    # calculate each base-16 digit
+    for digit in hex_part:
+        result = result * 16 + hex_digits.index(digit)
+    return sign * result
 
 
 def my_datetime(num_sec):
@@ -50,7 +108,7 @@ def my_datetime(num_sec):
         february = 29
     else:
         february = 28
-    # Determing the number of days in each month (leap year or not)
+    # Determine the number of days in each month (leap year or not)
     days_in_months = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     # Calculate month
@@ -73,6 +131,7 @@ def my_datetime(num_sec):
 def conv_endian(num, endian='big'):
     neg_flag = num < 0
     pos_num = abs(num)
+
     def int_to_hex(digit):
         hex_chars = "0123456789ABCDEF"
         hexer = ""
@@ -92,7 +151,7 @@ def conv_endian(num, endian='big'):
 
     byte_list = []
     hex_length = len(hex_str)
-    for i in range(0,hex_length,2):
+    for i in range(0, hex_length, 2):
         byte = hex_str[i:i+2]
         byte_list.append(byte)
 

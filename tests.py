@@ -149,7 +149,7 @@ class ConvNumTest(unittest.TestCase):
         self.assertEqual(conv_num(num_str), None)
 
     def test30(self):
-        """Tests if a space inside a number returns None"""
+        """Tests if a space inside a number string returns None"""
         num_str = "41 23"
         self.assertEqual(conv_num(num_str), None)
 
@@ -196,6 +196,7 @@ class ConvEndianTest(unittest.TestCase):
         """Test with zero"""
         self.assertEqual(conv_endian(0, 'big'), '00')
         self.assertEqual(conv_endian(0, 'little'), '00')
+
     def test1(self):
         """test from assignment desc"""
         self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
@@ -226,6 +227,7 @@ class ConvEndianTest(unittest.TestCase):
     def test7(self):
         """little endian reversal test"""
         self.assertEqual(conv_endian(66047, 'little'), 'FF 01 01')
+
 
 if __name__ == '__main__':
     unittest.main()
