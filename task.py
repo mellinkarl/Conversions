@@ -70,6 +70,41 @@ def my_datetime(num_sec):
     return f'{current_month:02d}-{current_day:02d}-{current_year}'
 
 
-def conv_endian():
-    """Converts a number from little endian to big endian or vice versa"""
-    pass
+def conv_endian(num, endian='big'):
+    neg_flag = num < 0
+    pos_num = abs(num)
+    def int_to_hex(digit):
+        hex_chars = "0123456789ABCDEF"
+        hexer = ""
+        if digit == 0:
+            return "0"
+        while digit > 0:
+            remainder = digit % 16
+            hexer = hex_chars[remainder] + hexer
+            digit = digit // 16
+        return hexer
+
+    hex_str = int_to_hex(pos_num)
+
+    hex_length = len(hex_str)
+    if hex_length % 2 != 0:
+        hex_str = "0" + hex_str
+
+    byte_list = []
+    hex_length = len(hex_str)
+    for i in range(0,hex_length,2):
+        byte = hex_str[i:i+2]
+        byte_list.append(byte)
+
+    if endian == 'little':
+        byte_list.reverse()
+    elif endian == 'big':
+        pass
+    else:
+        return None
+
+    result = byte_list
+    result = ' '.join(result)
+    if neg_flag:
+        result = '-'+result
+    return result
