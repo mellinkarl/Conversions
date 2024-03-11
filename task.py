@@ -68,3 +68,8 @@ def my_datetime(num_sec):
     current_day = num_sec // seconds_in_day + 1
 
     return f'{current_month:02d}-{current_day:02d}-{current_year}'
+
+
+def conv_endian():
+    """Converts a number from little endian to big endian or vice versa"""
+    pass

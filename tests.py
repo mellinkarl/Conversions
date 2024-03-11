@@ -155,7 +155,40 @@ class ConvNumTest(unittest.TestCase):
 
 
 class MyDatetimeTest(unittest.TestCase):
-    pass
+    def test1(self):
+        """Tests original date"""
+        num_sec = 0
+        self.assertEqual(my_datetime(num_sec), "01-01-1970")
+
+    def test2(self):
+        """Tests 1 second"""
+        num_sec = 1
+        self.assertEqual(my_datetime(num_sec), "01-01-1970")
+
+    def test3(self):
+        """Tests 1 day"""
+        num_sec = 86400
+        self.assertEqual(my_datetime(num_sec), "01-02-1970")
+
+    def test4(self):
+        """Tests 1 year"""
+        num_sec = 31536000
+        self.assertEqual(my_datetime(num_sec), "01-01-1971")
+
+    def test5(self):
+        """Tests 5 years (includes one leap year)"""
+        num_sec = 157766400
+        self.assertEqual(my_datetime(num_sec), "01-01-1975")
+
+    def test6(self):
+        """Tests 123456789 seconds"""
+        num_sec = 123456789
+        self.assertEqual(my_datetime(num_sec), "11-29-1973")
+
+    def test7(self):
+        """Tests hundreds of years"""
+        num_sec = 201653971200
+        self.assertEqual(my_datetime(num_sec), "02-29-8360")
 
 
 class ConvEndianTest(unittest.TestCase):
