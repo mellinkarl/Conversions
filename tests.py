@@ -159,8 +159,40 @@ class MyDatetimeTest(unittest.TestCase):
 
 
 class ConvEndianTest(unittest.TestCase):
-    pass
+    def test0(self):
+        """Test with zero"""
+        self.assertEqual(conv_endian(0, 'big'), '00')
+        self.assertEqual(conv_endian(0, 'little'), '00')
+    def test1(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
+        self.assertEqual(conv_endian(954786), '0E 91 A2')
 
+    def test2(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(-954786), '-0E 91 A2')
+
+    def test3(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(954786, 'little'), 'A2 91 0E')
+
+    def test4(self):
+        """test from assignment desc"""
+        self.assertEqual(conv_endian(-954786, 'little'), '-A2 91 0E')
+        self.assertEqual(conv_endian(num=-954786, endian='little'), '-A2 91 0E')
+
+    def test5(self):
+        """test from assignment desc"""
+        self.assertIsNone(conv_endian(num=-954786, endian='small'))
+
+    def test6(self):
+        """Large Positive Number"""
+        self.assertEqual(conv_endian(4294967295, 'big'), 'FF FF FF FF')
+        self.assertEqual(conv_endian(4294967295, 'little'), 'FF FF FF FF')
+
+    def test7(self):
+        """little endian reversal test"""
+        self.assertEqual(conv_endian(66047, 'little'), 'FF 01 01')
 
 if __name__ == '__main__':
     unittest.main()
