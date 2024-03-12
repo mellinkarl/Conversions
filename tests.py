@@ -1,5 +1,6 @@
 import unittest
 from task import conv_num, my_datetime, conv_endian
+import random
 
 
 class ConvNumTest(unittest.TestCase):
@@ -152,6 +153,15 @@ class ConvNumTest(unittest.TestCase):
         """Tests if a space inside a number string returns None"""
         num_str = "41 23"
         self.assertEqual(conv_num(num_str), None)
+
+    def test31(self):
+        """Random tests for conv_num"""
+        for i in range(10000):
+            num_str = str(random.randint(-10000, 10000))
+            self.assertEqual(conv_num(num_str), int(num_str))
+        for i in range(10000):
+            num_str = str(random.uniform(-100.0, 100.0))
+            self.assertEqual(conv_num(num_str), float(num_str))
 
 
 class MyDatetimeTest(unittest.TestCase):

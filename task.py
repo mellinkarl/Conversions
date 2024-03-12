@@ -52,13 +52,9 @@ def str_to_float(num_str):
     # check if all characters are digits
     if not integer_part.isdigit() or not decimal_part.isdigit():
         return None
-    result = str_to_int(integer_part)
-    factor = 0.1
-    # calculate decimal places
-    for digit in decimal_part:
-        result += str_to_int(digit) * factor
-        factor /= 10
-    return sign * round(result, len(decimal_part))
+    result = str_to_int(''.join([integer_part, decimal_part]))
+    result = result / (10 ** len(decimal_part))
+    return sign * result
 
 
 def hex_str_to_int(num_str):
